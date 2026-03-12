@@ -45,6 +45,8 @@ STRING  \"(\\.|[^"\\])*\"
 ";"     { return SEMICOLON; }
 "+"  { return PLUS; }
 "-"  { return SUB; }
+"*"  { return MUL; }
+"/"  { return DIV; }
 
 "true"          { yylval.b_val = 1; return BOOL_LITERAL; }
 "false"         { yylval.b_val = 0; return BOOL_LITERAL; }
@@ -57,6 +59,10 @@ STRING  \"(\\.|[^"\\])*\"
 {DIGIT}+ {
     yylval.i_val = atoi(yytext);
     return INT_LITERAL;
+}
+{DIGIT}*\.{DIGIT}+|{DIGIT}+\.  {
+    yylval.d_val = atof(yytext);
+    return DOUBLE_LITERAL;
 }
 {STRING} {
   /* Remove the quotes and store the string */

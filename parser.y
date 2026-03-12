@@ -24,7 +24,7 @@ extern FILE *yyin;
 %token VAR PRINT
 %token INT_TYPE CHAR_TYPE DOUBLE_TYPE BOOL_TYPE STRING_TYPE
 %token  COLON SEMICOLON LBRACKET RBRACKET ASSIGN LPARENT RPARENT
-%token PLUS SUB
+%token PLUS SUB DIV MUL
 /*Type definitions for TOKEN*/
 %token <entry> IDENTIFIER
 %token <i_val> INT_LITERAL
@@ -35,6 +35,7 @@ extern FILE *yyin;
 %token <s_val> STRING_LITERAL
 
 %left PLUS SUB
+%left MUL DIV 
 
 /*Defining types into the parser*/
 %type <type_enum> data_type
@@ -74,6 +75,8 @@ expression:
     }
     | expression PLUS expression { $$ = $1 + $3;}
     | expression SUB expression { $$ = $1 - $3;}
+    | expression MUL expression { $$ = $1 * $3; }
+    | expression DIV expression { $$ = $1 / $3; }
     | LPARENT expression RPARENT { $$ = $2; }
     ;
 
@@ -96,6 +99,10 @@ print_expression: PRINT IDENTIFIER {
     case TYPE_STRING:    printf("'%s'\n", $2->data.s_value); break;
   }
 
+}
+| PRINT STRING_LITERAL {
+  printf("%s\n", $2);
+  free($2);
 }
 ;
 
