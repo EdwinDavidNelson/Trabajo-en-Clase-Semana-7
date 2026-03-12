@@ -13,6 +13,8 @@ var: [int] total = b-a;
 var: [int] test = (2+3) - (20-5);
 
 print test;
-
+print mul_test;
+print div_test;
+print "hello world";
 
 
